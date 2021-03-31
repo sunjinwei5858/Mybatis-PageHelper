@@ -68,11 +68,17 @@ public class PageInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         try {
+            // 获取参数
             Object[] args = invocation.getArgs();
+            // 第一个参数：MappedStatement
             MappedStatement ms = (MappedStatement) args[0];
+            // 第二个参数：查询条件类
             Object parameter = args[1];
+            // 第三个参数：偏移量
             RowBounds rowBounds = (RowBounds) args[2];
+            // 第四个参数：结果集
             ResultHandler resultHandler = (ResultHandler) args[3];
+
             Executor executor = (Executor) invocation.getTarget();
             CacheKey cacheKey;
             BoundSql boundSql;
@@ -112,7 +118,7 @@ public class PageInterceptor implements Interceptor {
             }
             return dialect.afterPage(resultList, parameter, rowBounds);
         } finally {
-            if(dialect != null){
+            if (dialect != null) {
                 dialect.afterAll();
             }
         }
